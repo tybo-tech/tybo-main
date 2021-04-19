@@ -38,22 +38,26 @@ export class ProductSectionComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngOnInit() {
+
+
+
+    this.homeShopService.parentCategoryObservable.subscribe(data => {
+      this.selectedCategory = data;
+      this.loadProducts();
+    });
+
+  }
+  loadProducts() {
     this.homeShopService.productShopListObservable.subscribe(data => {
       if (data && data.length) {
         this.allProducts = data;
         this.products = data;
+        if(this.selectCategory){
+          this.products = this.products.filter(x=>x.ParentCategoryGuid === this.selectedCategory.CategoryId)
+        }
       }
     });
-
-    
-    this.homeShopService.parentCategoryObservable.subscribe(data => {
-      if (data) {
-        this.selectedCategory = data;
-      }
-    });
-
   }
-
   ngAfterViewInit(): void {
     if (this.product) {
       setTimeout(() => {

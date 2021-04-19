@@ -248,4 +248,7 @@ export class OverviewComponent implements OnInit {
       this.uxService.updateMessagePopState('Shop LinkCopied to clipboard.');
     }
   }
+  gotoshop(){
+   this.router.navigate([this.user.Company.Slug || this.user.CompanyId]) 
+  }
 }

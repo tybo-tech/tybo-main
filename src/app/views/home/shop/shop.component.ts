@@ -8,6 +8,7 @@ import { Location } from '@angular/common';
 import { AfterViewInit } from '@angular/core';
 import { ORDER_TYPE_SALES, TIMER_LIMIT_WAIT } from 'src/shared/constants';
 import { UxService } from 'src/services/ux.service';
+import { CompanyService } from 'src/services/company.service';
 
 @Component({
   selector: 'app-shop',
@@ -28,7 +29,6 @@ export class ShopComponent implements OnInit, AfterViewInit {
   catergories: Category[];
   parentCatergories: Category[] = [];
   allProducts: Product[];
-  isLoading = true;
   showIntro: boolean;
   order: Order;
   showMenu: any;
@@ -48,6 +48,7 @@ export class ShopComponent implements OnInit, AfterViewInit {
     private location: Location,
     private activatedRoute: ActivatedRoute,
     private uxService: UxService,
+    private companyService: CompanyService,
 
 
   ) {
@@ -71,52 +72,57 @@ export class ShopComponent implements OnInit, AfterViewInit {
     this.product = this.homeShopService.getCurrentProductValue;
     this.user = this.accountService.currentUserValue;
     this.order = this.orderService.currentOrderValue;
-    this.isLoading = true;
+    this.companyService.getCompanyById(this.shopSlug).subscribe(data => {
+      if (data && data.CompanyId) {
+        this.company = data;
+      }
+    })
+
     // this.homeShopService.getForShopSigle(this.shopSlug).subscribe(data => {
     //   console.log('shop', data);
 
     // })
-    this.productService.getProductsSyncForShop(this.shopSlug).subscribe(data => {
-      this.isLoading = false;
-      if (data) {
-        this.company = data;
-        this.products = this.company.Products;
-        this.allProducts = this.company.Products;
-        if (this.company.CompanyId === 'notfound') {
-          this.showNotFound = true;
-        }
+    // this.productService.getProductsSyncForShop(this.shopSlug).subscribe(data => {
+    //   this.isLoading = false;
+    //   if (data) {
+    //     this.company = data;
+    //     this.products = this.company.Products;
+    //     this.allProducts = this.company.Products;
+    //     if (this.company.CompanyId === 'notfound') {
+    //       this.showNotFound = true;
+    //     }
 
-        this.company.Products = null;
-        if (this.company && this.company.Dp) {
-          this.uxService.updateNavBarLogoState({ LogoUrl: this.company.Dp, Name: this.company.Name });
-        }
-        if (this.product) {
-          const currentProduct = this.allProducts.find(x => x.ProductId === this.product.ProductId);
-          if (currentProduct) {
-            this.product = currentProduct;
-            this.homeShopService.updateProductState(this.product)
-          }
-        }
-        this.products.forEach((product, index) => {
-          product.ClassSelector = `class-${product.ProductId}`;
-          if (this.company && this.company.Promotions) {
-            product.SalePrice = Number(product.RegularPrice) - (Number(product.RegularPrice) * (Number(this.company.Promotions[0].DiscountValue) / 100));
-            console.log(product.SalePrice, product.RegularPrice);
-            if (Number(product.SalePrice) < Number(product.RegularPrice)) {
-              product.OnSale = true;
-            }
+    //     this.company.Products = null;
+    //     if (this.company && this.company.Dp) {
+    //       this.uxService.updateNavBarLogoState({ LogoUrl: this.company.Dp, Name: this.company.Name });
+    //     }
+    //     if (this.product) {
+    //       const currentProduct = this.allProducts.find(x => x.ProductId === this.product.ProductId);
+    //       if (currentProduct) {
+    //         this.product = currentProduct;
+    //         this.homeShopService.updateProductState(this.product)
+    //       }
+    //     }
+    //     this.products.forEach((product, index) => {
+    //       product.ClassSelector = `class-${product.ProductId}`;
+    //       if (this.company && this.company.Promotions) {
+    //         product.SalePrice = Number(product.RegularPrice) - (Number(product.RegularPrice) * (Number(this.company.Promotions[0].DiscountValue) / 100));
+    //         console.log(product.SalePrice, product.RegularPrice);
+    //         if (Number(product.SalePrice) < Number(product.RegularPrice)) {
+    //           product.OnSale = true;
+    //         }
 
-          }
-        })
-        this.loadCategories(this.products);
-        this.isLoading = false;
-        this.initScreen();
-        this.initOrder();
+    //       }
+    //     })
+    //     this.loadCategories(this.products);
+    //     this.isLoading = false;
+    //     this.initScreen();
+    //     this.initOrder();
 
 
 
-      }
-    });
+    //   }
+    // });
 
   }
 

@@ -55,9 +55,18 @@
     </div> -->
 
     <div class="all-catergories">
-      <a *ngIf="!user" (click)="goto('home/hello-fashion-shop')" class="sell-ontybo">Sell on Tybo Marketplace</a>
-      <a *ngIf="user && user.UserType === 'Admin'" (click)="goto('admin/dashboard')" class="sell-ontybo"> Go to my
-        dashboard</a>
+      <a *ngIf="!user" (click)="goto('home/hello-fashion-shop')" class="sell-ontybo">
+        <span class="material-icons">
+          storefront
+          </span>
+        Sell on Tybo Marketplace
+      </a>
+      <a *ngIf="user && (user.UserType === 'Admin' || user.UserType === 'Super')"  (click)="goto('admin/dashboard')" class="sell-ontybo">
+        <span class="material-icons">
+          grid_view
+          </span>
+               Go to my dashboard
+      </a>
       <a *ngIf="user && user.UserType === 'Customer'" (click)="goto('home/profile')" class="sell-ontybo"> Go to my
         profile</a>
 

@@ -35,6 +35,9 @@ export class ProductVariationsComponent implements OnInit {
   varationHeadings: string[];
   showAddColor: boolean;
   selectedVariation: Variation;
+  showAdd: boolean;
+  newVariation: Variation;
+  showAddSize: any;
   constructor(
     private accountService: AccountService,
     private companyVariationService: CompanyVariationService,
@@ -60,7 +63,7 @@ export class ProductVariationsComponent implements OnInit {
     })
     this.companyVariationService.getAllVariations('Fashion').subscribe(data => {
       if (data && data.length) {
-        this.variations = data;
+        this.variations = data || [];
         this.variations.map(x => x.IsSelected = false);
         this.variations[this.index].IsSelected = true;
         this.heading = `All variations (${this.variations.length})`;
@@ -82,6 +85,10 @@ export class ProductVariationsComponent implements OnInit {
   }
   toggleShowAddColor(variation: Variation) {
     this.showAddColor = !this.showAddColor;
+    this.selectedVariation = variation;
+  }
+  toggleShowAddSzie(variation: Variation) {
+    this.showAddSize = !this.showAddSize;
     this.selectedVariation = variation;
   }
   view(variation: Variation, index) {
@@ -126,7 +133,7 @@ export class ProductVariationsComponent implements OnInit {
       VariationOptionId: 0,
       VariationId: variation.VariationId,
       Name: undefined,
-      Description: undefined,
+      Description: '',
       ImageUrl: '',
       CreateUserId: this.user.UserId,
       ModifyUserId: this.user.UserId,
@@ -437,6 +444,28 @@ export class ProductVariationsComponent implements OnInit {
       this.router.navigate(['admin/dashboard/product', this.product.ProductSlug || this.product.ProductId]);
     }
 
+  }
+
+  showAddNewVariation() {
+    this.showAdd = true;
+    this.newVariation = {
+
+      VariationId: 1,
+      CompanyId: this.user.CompanyId,
+      Name: '',
+      CompanyType: 'Fashion',
+      Description: '',
+      CreateUserId: this.user.UserId,
+      ModifyUserId: this.user.UserId,
+      StatusId: 1,
+    }
+  
+  }
+  addNewVariation() {
+    this.companyVariationService.addVariation(this.newVariation).subscribe(data=>{
+      console.log(data);
+      
+    })
   }
 
 }

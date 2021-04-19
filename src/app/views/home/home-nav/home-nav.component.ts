@@ -72,7 +72,8 @@ export class HomeNavComponent implements OnInit {
         this.products = data
         this.allProducts = data;
         this.loadCategories(this.allProducts);
-        this.tab(this.parentCatergories[0]);
+
+        // this.tab(this.parentCatergories[0]);
         // this.homeShopService.updateProductShopListState(this.allProducts);
       }
     });
@@ -80,13 +81,12 @@ export class HomeNavComponent implements OnInit {
 
   showAllProducts() {
     this.goto('');
-    this.homeShopService.parentCategoryObservable.subscribe(data => {
-      if (data) {
-        this.tab(data);
-      } else {
-        this.tab(this.parentCatergories[0]);
-      }
-    });
+    const cat = this.homeShopService.getCurrentParentCategoryValue;
+    if (cat) {
+      this.tab(cat);
+    } else {
+      this.tab(this.parentCatergories[0]);
+    }
   }
   goto(event) {
     this.router.navigate([event]);
@@ -100,7 +100,7 @@ export class HomeNavComponent implements OnInit {
       category.IsSelected = true;
       const products = this.allProducts.filter(x => x.ParentCategoryGuid === category.CategoryId);
       console.log(products);
-      this.homeShopService.updateProductShopListState(products);
+      this.homeShopService.updateProductShopListState(this.allProducts);
       this.homeShopService.updateParentCategoryState(category);
     }
 
@@ -135,6 +135,12 @@ export class HomeNavComponent implements OnInit {
     this.products.map(x => x.Category = null);
     this.products.map(x => x.ParentCategory = null);
     this.products.map(x => x.TertiaryCategory = null);
+    const cat = this.homeShopService.getCurrentParentCategoryValue;
+    if (cat) {
+      this.tab(cat);
+    } else {
+      this.tab(this.parentCatergories[0]);
+    }
 
   }
   childCategoryselected(child) {

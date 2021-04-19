@@ -1,6 +1,6 @@
-<app-shop-products *ngIf="parentCatergories && selectedCategory && company" [selectedCategory]="selectedCategory" [company]="company"
+<app-shop-products *ngIf="company"  [company]="company"
   (selectCategoryEvent)="selectCategory($event)"></app-shop-products>
-
+<!-- 
   <div class="no-products" *ngIf="!this.allProducts || !this.allProducts.length">
     <h3>
       No products found  for this shop yet, please check again later.
@@ -8,7 +8,7 @@
         <a routerLink=""> Checkout more shops</a>
       </span>
     </h3>
-  </div>
+  </div> -->
 
 <div class="showNotFound" *ngIf="showNotFound">
   <h1>
@@ -16,10 +16,4 @@
 
   </h1>
   <a routerLink="">Take me home</a>
-</div>
-
-<div *ngIf="isLoading" class="loading">
-  <div class="spiner">
-    <mat-spinner></mat-spinner>
-  </div>
 </div>

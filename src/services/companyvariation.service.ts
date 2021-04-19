@@ -13,7 +13,7 @@ import { CompanyVariationOption } from 'src/models/company.variation.option.mode
   providedIn: 'root'
 })
 export class CompanyVariationService {
- 
+
 
   private companyVariationListBehaviorSubject: BehaviorSubject<CompanyVariation[]>;
   public companyVariationListObservable: Observable<CompanyVariation[]>;
@@ -65,7 +65,7 @@ export class CompanyVariationService {
     localStorage.setItem('justCreatedCompanyVariationList', JSON.stringify(variations));
   }
 
-  
+
 
   public get getJustCreatedCompanyVariationList(): CompanyVariation[] {
     return this.justCreatedCompanyVariationListBehaviorSubject.value;
@@ -136,6 +136,13 @@ export class CompanyVariationService {
     const params = `VariationId=${variationId}`;
     return this.http.get<VariationOption[]>(
       `${this.url}/api/company-variation/list-variations-options.php?${params}`
+    );
+  }
+
+
+  addVariation(option: Variation) {
+    return this.http.post<Variation>(
+      `${this.url}/api/variation/add-variation.php`, option
     );
   }
 

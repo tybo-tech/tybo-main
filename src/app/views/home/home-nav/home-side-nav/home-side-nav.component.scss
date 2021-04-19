@@ -131,7 +131,13 @@
     color: $black;
     cursor: pointer;
     font-weight: 600;
+    text-transform: uppercase;
 
+    span {
+      font-size: 1.4em;
+      top: .22em;
+      color: $pop-darker;
+    }
   }
 
 
@@ -172,14 +178,16 @@ h3 {
     text-align: center;
     font-weight: 600;
     cursor: pointer;
-    span{
+    text-transform: uppercase;
+
+    span {
       top: 3px;
       font-size: 16px;
     }
   }
 }
 
-.logout{
+.logout {
   display: block;
   margin: 1em 0;
   padding: .1em;
@@ -191,5 +199,3 @@ h3 {
   font-size: .85em;
   cursor: pointer;
 }
-
-

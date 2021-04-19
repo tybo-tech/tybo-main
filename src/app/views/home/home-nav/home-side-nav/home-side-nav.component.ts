@@ -28,6 +28,9 @@ export class HomeSideNavComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.accountService.user.subscribe(data=>{
+      this.user = data;
+    })
 
     this.uxService.uxShowSideNavObservable.subscribe(data => {
       this.showMobileNav = data;

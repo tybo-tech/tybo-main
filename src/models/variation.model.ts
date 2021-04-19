@@ -1,13 +1,11 @@
 import { VariationOption } from './variation.option.model';
 
 export interface Variation {
-  CompanyVariationId: string;
-  CompanyId: string;
   VariationId: number;
+  CompanyId: string;
   Name: string;
   CompanyType: string;
   Description: string;
-  IsDeleted: boolean;
   CreateDate?: string;
   CreateUserId: string;
   ModifyDate?: string;

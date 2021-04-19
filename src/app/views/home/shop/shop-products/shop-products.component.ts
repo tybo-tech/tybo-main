@@ -13,7 +13,7 @@ import { Company } from '../../../../../../../tybo-invoice/src/models/company.mo
   styleUrls: ['./shop-products.component.scss']
 })
 export class ShopProductsComponent implements OnInit {
-  @Input() selectedCategory: Category;
+  selectedCategory: Category;
   @Input() company: Company;
   promotions: Promotion[];
   @Output() selectCategoryEvent: EventEmitter<Category> = new EventEmitter<Category>();
@@ -54,5 +54,5 @@ export class ShopProductsComponent implements OnInit {
     }
 
   }
-  gotoShop(e){}
+  gotoShop(e) { }
 }

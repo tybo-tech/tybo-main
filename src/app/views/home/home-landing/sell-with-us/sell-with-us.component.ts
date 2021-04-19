@@ -6,7 +6,7 @@ import { Email, User, UserModel } from 'src/models';
 import { Company } from 'src/models/company.model';
 import { ModalModel } from 'src/models/modal.model';
 import { AccountService, EmailService, UploadService, UserService } from 'src/services';
-import { ADMIN, IMAGE_DONE } from 'src/shared/constants';
+import { ADMIN, CUSTOMER, IMAGE_DONE, SUPER } from 'src/shared/constants';
 
 @Component({
   selector: 'app-sell-with-us',
@@ -20,7 +20,8 @@ export class SellWithUsComponent implements OnInit {
   slide = 1;
   imageClass: string;
   imageIndex = 1;
-  showAdd = true;
+  showAdd;
+  showLogin;
   signUpStep = 1;
   signUpHeading = 'Start your shop.';
   signUpSpan = ''
@@ -34,6 +35,8 @@ export class SellWithUsComponent implements OnInit {
     img: undefined
   };
   modalImage: string;
+  email: any;
+  password: any;
   constructor(
     private router: Router,
     private accountService: AccountService,
@@ -105,7 +108,7 @@ export class SellWithUsComponent implements OnInit {
     this.router.navigate(['home/start-shop']);
   }
   login() {
-    this.router.navigate(['home/sign-in']);
+    this.showLogin = true;
   }
   changeSlide(number) {
     this.slide = number;
@@ -219,5 +222,27 @@ export class SellWithUsComponent implements OnInit {
   }
   signOut(): void {
     this.authService.signOut();
+  }
+
+  OnLogin() {
+    const email = this.email;
+    const password =  this.password;
+    
+    this.accountService.login({ email, password }).subscribe(user => {
+      if (user && user.UserId) {
+        this.accountService.updateUserState(user);
+    
+        if (user.UserType === ADMIN) {
+          this.router.navigate(['admin/dashboard']);
+        }
+        if (user.UserType === SUPER) {
+          this.router.navigate(['admin/dashboard']);
+        }
+        if (user.UserType === CUSTOMER) {
+          this.router.navigate(['']);
+        }
+      }
+
+    });
   }
 }

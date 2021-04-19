@@ -1,5 +1,11 @@
-<div class="main-list _super" *ngIf="variations && variations.length && product">
+<div class="main-list _super" *ngIf="variations">
+  <h3>
+    Product variations
+  </h3>
 
+  <div class="add-new">
+    <button (click)="showAddNewVariation()">Add new variation</button>
+  </div>
   <div class="variation" *ngFor="let variation of variations">
     Product {{variation.Name}}(s)
 
@@ -8,11 +14,16 @@
       <button class="btn-size" *ngFor="let item of variation.VariationsOptions" (click)="select(item, variation.Name)"
         [ngClass]="item.Class">
         {{item.Name}}</button>
+
+        <button class="btn-size in-colour" (click)="toggleShowAddSzie(variation)">
+          Add new size
+        </button>
     </div>
 
     <div class="variations" *ngIf="variation.Name == 'Color'">
       <button class="btn-color" *ngFor="let item of variation.VariationsOptions"
-        [ngStyle]="{'background-color':item.Description, 'background-image': item.ImageUrl? 'url(' + item.ImageUrl + ')' : 'none'}" (click)="select(item, variation.Name)" [ngClass]="item.Class">
+        [ngStyle]="{'background-color':item.Description, 'background-image': item.ImageUrl? 'url(' + item.ImageUrl + ')' : 'none'}"
+        (click)="select(item, variation.Name)" [ngClass]="item.Class">
         <span *ngIf="item.Class && item.Class.length" class="selected-color">
         </span>
         <span *ngIf="!item.Class || !item.Class.length" class="not-selected-color">
@@ -72,6 +83,62 @@
       <button (click)="addVariationOption()" [disabled]="!newOption.Name || !newOption.Description">Save</button>
       <div class="link" (click)="showAddColor = false">Cancel</div>
     </div>
-   
+
+  </div>
+</div>
+
+
+
+
+
+<div class="quick-add" *ngIf="showAddSize">
+  <div class="form">
+    <h1>
+      Add new size
+    </h1>
+
+
+    <div class="form-item">
+
+      <label for="">Size value</label>
+      <input type="text" name="" id="" [(ngModel)]="newOption.Name" placeholder="Enter size here">
+    </div>
+
+    <div class="form-item">
+      <button (click)="addVariationOption()" [disabled]="!newOption.Name">Save</button>
+      <div class="link" (click)="showAddSize = false">Cancel</div>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<div class="quick-add" *ngIf="showAdd && newVariation">
+  <div class="form">
+    <h3>
+      Add new variation.
+      <span>These are the options cutomer will have to choose from when they are buying</span>
+    </h3>
+
+
+    <div class="form-item">
+      <label for="">Product name</label>
+      <input type="text" name="" id="" [(ngModel)]="newVariation.Name" placeholder="Enter product name.">
+    </div>
+
+
+    <div class="form-item">
+      <button (click)="addNewVariation()" [disabled]="!newVariation.Name">Next</button>
+      <div class="link" (click)="showAdd = false">Cancel</div>
+    </div>
   </div>
 </div>
